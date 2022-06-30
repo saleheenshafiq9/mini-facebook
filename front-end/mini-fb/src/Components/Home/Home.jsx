@@ -8,7 +8,7 @@ const Home = () => {
         <div>
             <Navbar
                 style={{
-                backgroundColor: "#FFE19C",
+                backgroundColor: "#E0FBFC",
                 height: "80px",
                 fontFamily: "finlandica",
                 fontSize: "18px"
@@ -16,6 +16,7 @@ const Home = () => {
                 className="px-5"
             >
                 <Link to="/" id="NavLink"  className="mr-auto Brand">
+                    <img src={Logo} alt="mini-fb" width="20px" height="20px" className="mx-2"/>
                     <b>mini-fb</b>
                 </Link>
                 <Nav>
@@ -24,7 +25,7 @@ const Home = () => {
                         display: "contents",
                         }}
                     >
-                        <Link to="/home" id="NavLink" className="px-5">
+                        <Link to="/" id="NavLink" className="px-5">
                             <b>Feed</b>
                         </Link>
                         <Link to="/login" id="NavLink" className="px-5">
