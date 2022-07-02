@@ -31,6 +31,9 @@ const Home = () => {
                         <Link to="/login" id="NavLink" className="px-5">
                             <b>Login</b>
                         </Link>
+                        <Link to="/users" id="NavLink" className="px-5">
+                            <b>Users</b>
+                        </Link>
                     </NavItem>
                 </Nav>
             </Navbar>

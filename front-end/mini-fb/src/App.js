@@ -1,9 +1,11 @@
 import * as React from "react";
 import './App.css';
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Home from './Components/Home/Home';
 import Login from "./Components/Login/Login";
 import Feed from "./Components/Feed/Feed";
+import Users from "./Components/Users/Users";
+import Thoughts from "./Components/Thoughts/Thoughts";
 
 function App() {
   return (
@@ -12,6 +14,12 @@ function App() {
       <Routes>
         <Route path="/" element={<Feed />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/users" element={<Users />} />
+        <Route path="/:userId/thoughts" element={<Thoughts />} />
+        <Route
+          path="*"
+          element={<Navigate to="/" replace />}
+        />
       </Routes>
     </div>
   );

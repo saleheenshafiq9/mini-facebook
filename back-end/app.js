@@ -1,5 +1,12 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const url = 'mongodb://localhost/mini-fb'
 
 const app = express();
 
-app.listen(9000);
+mongoose.connect(url, {useNewUrlParser:true});
+const con = mongoose.connection
+
+con.on('open', function(){
+    console.log('connected...')
+})

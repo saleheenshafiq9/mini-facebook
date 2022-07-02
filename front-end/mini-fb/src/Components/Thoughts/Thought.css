@@ -1,0 +1,57 @@
+.thought-list {
+    list-style: none;
+    margin: 1rem auto;
+    padding: 0;
+    width: 90%;
+    max-width: 60rem;
+  }
+  
+  .thought-item {
+    margin: 1rem 0;
+  }
+  
+  .thought-item__content {
+    padding: 0;
+  }
+  
+  .thought-item__info {
+    padding: 1rem;
+    text-align: left;
+    padding-left: 50px;
+  }
+  
+  .thought-item__image {
+    width: 4rem;
+    height: 4rem;
+    margin-right: 1rem;
+  }
+  
+  .thought-item__info h3,
+  .thought-item__info p {
+    margin: 0 0 0.5rem 0;
+  }
+  
+  .thought-item__actions {
+    padding: 1rem;
+    text-align: center;
+    border-top: 1px solid #ccc;
+  }
+  
+  .thought-item__modal-content {
+    padding: 0;
+  }
+  
+  .thought-item__modal-actions {
+    text-align: right;
+  }
+  
+  .thought-item__actions button,
+  .thought-item__actions a {
+    margin: 0.5rem;
+  }
+  
+  @media (min-width: 768px) {
+    .thought-item__image {
+      height: 2rem;
+    } 
+  }
