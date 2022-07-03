@@ -2,7 +2,6 @@ import React from 'react'
 import Card from '../UIElements/Card'
 
 import './Thought.css'
-import Avatar from '../UIElements/Avatar'
 
 const ThoughtsItem = props => {
   return (
@@ -10,7 +9,8 @@ const ThoughtsItem = props => {
       <li className='thought-item'>
         <Card className="thought-item__content">
             <div className="thought-item__info">
-                <h3>{props.postmaker}</h3>
+                <h5>{props.postmaker}</h5>
+                <p className='text text-secondary'>{props.time}</p>
                 <p>{props.caption}</p>
             </div>
         </Card>

@@ -23,7 +23,9 @@ const ThoughtsList = props => {
                         id={thought.id}
                         caption={thought.caption}
                         postmaker={thought.postmaker}
-                        imageUrl={thought.imageUrl}
+                        time={thought.time}
+                        image={thought.image}
+                        creator={thought.creator}
                     />)}
             </ul>
         </div>

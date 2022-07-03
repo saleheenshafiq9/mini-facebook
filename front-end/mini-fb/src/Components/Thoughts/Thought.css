@@ -21,12 +21,12 @@
   }
   
   .thought-item__image {
-    width: 4rem;
-    height: 4rem;
-    margin-right: 1rem;
+    width: 10%;
+    height: 12.5rem;
+    margin-right: 1.5rem;
   }
-  
-  .thought-item__info h3,
+
+  .thought-item__info h5,
   .thought-item__info p {
     margin: 0 0 0.5rem 0;
   }
@@ -52,6 +52,6 @@
   
   @media (min-width: 768px) {
     .thought-item__image {
-      height: 2rem;
+      height: 4rem;
     } 
   }
