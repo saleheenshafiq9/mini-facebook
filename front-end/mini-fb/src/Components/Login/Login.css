@@ -1,0 +1,24 @@
+.authentication__header {
+    color: white;
+    text-align: center;
+  }
+  
+  .authentication {
+    width: 90%;
+    max-width: 25rem;
+    margin: 7rem auto;
+    text-align: center;
+  }
+  
+  .authentication form {
+    margin-bottom: 1rem;
+  }
+
+  .btn {
+    background-color: #3D5A80;
+    color: #E0FBFC;
+}
+
+.btn:hover {
+    background-color: #98C1D9;
+}

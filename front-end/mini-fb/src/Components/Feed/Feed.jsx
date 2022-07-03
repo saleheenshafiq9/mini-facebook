@@ -40,7 +40,6 @@ const Feed = () => {
 
   return (
     <>
-    <Story />
     <div className='container-fluid m-5'>
       <form onSubmit={addStatusHandler}>
         <div className='row'>

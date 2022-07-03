@@ -6,6 +6,7 @@ import Login from "./Components/Login/Login";
 import Feed from "./Components/Feed/Feed";
 import Users from "./Components/Users/Users";
 import Thoughts from "./Components/Thoughts/Thoughts";
+import Register from "./Components/Login/Register";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Feed />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/users" element={<Users />} />
         <Route path="/:userId/thoughts" element={<Thoughts />} />
         <Route
