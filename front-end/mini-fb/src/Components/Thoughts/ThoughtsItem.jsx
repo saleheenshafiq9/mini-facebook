@@ -9,6 +9,11 @@ const ThoughtsItem = props => {
       <li className='thought-item'>
         <Card className="thought-item__content">
             <div className="thought-item__info">
+              <img src="./self.jpg" alt={props.postmaker} style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%"
+              }} className="my-3"/>
                 <h5>{props.postmaker}</h5>
                 <p className='text text-secondary'>{props.time}</p>
                 <p>{props.caption}</p>

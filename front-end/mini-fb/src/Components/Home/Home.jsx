@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom";
 import { Navbar, NavbarBrand, Nav, NavItem } from "reactstrap";
+import { AuthContext } from "../UIElements/Context/Auth-Context";
 import Logo from '../../Assets/mini-fb.png'
 import './Home.css'
+import { useContext } from "react";
 
 const Home = () => {
+    const auth = useContext(AuthContext);
     return (
         <div>
             <Navbar
@@ -25,15 +28,26 @@ const Home = () => {
                         display: "contents",
                         }}
                     >
-                        <Link to="/" id="NavLink" className="px-5">
-                            <b>Feed</b>
-                        </Link>
-                        <Link to="/login" id="NavLink" className="px-5">
-                            <b>Login</b>
-                        </Link>
-                        <Link to="/users" id="NavLink" className="px-5">
-                            <b>Users</b>
-                        </Link>
+                        {auth.isLoggedIn && (
+                            <Link to="/" id="NavLink" className="px-5">
+                                <b>Feed</b>
+                            </Link>
+                        )}
+                        {!auth.isLoggedIn && (
+                            <Link to="/login" id="NavLink" className="px-5">
+                                <b>Login</b>
+                            </Link>
+                        )}
+                        {auth.isLoggedIn && (
+                            <Link to="/users" id="NavLink" className="px-5">
+                                <b>Users</b>
+                            </Link>
+                        )}
+                        {auth.isLoggedIn && (
+                            <button id="NavLink" className="btn btn-sm px-5" onClick={auth.logout}>
+                                <b>Logout</b>
+                            </button>
+                        )}
                     </NavItem>
                 </Nav>
             </Navbar>

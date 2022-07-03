@@ -40,10 +40,15 @@ const Feed = () => {
 
   return (
     <>
+    <Story />
     <div className='container-fluid m-5'>
       <form onSubmit={addStatusHandler}>
         <div className='row'>
-            <div className='col-2'></div>
+            <div className='col-2 mt-5'>
+              <img src="./thought-bubble.png" alt="thought-bubble" width="50px" height="50px" style={{
+                float: "right"
+              }}/>
+            </div>
             <div className='col-6'>
                 <div className="form-floating">
                     <textarea className="form-control" placeholder="Leave a status here" id="floatingTextarea" style={{height: "100px"}} onChange={changeHandler}
@@ -52,7 +57,7 @@ const Feed = () => {
                 </div>
             </div>
             <div className='col-2'>
-            <button className='btn my-4' type='submit'>Post</button>
+            <button className='btn my-5' type='submit'>Post</button>
             </div>
         </div>
       </form>
