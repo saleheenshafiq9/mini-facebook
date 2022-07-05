@@ -1,10 +1,13 @@
 const express = require('express');
 
+const thoughtsControllers = require('../controllers/thoughts-controllers');
+
 const router = express.Router();
 
-router.get('/', (req, res, next) => {
-    console.log('GET request in Thoughts');
-    res.json({message: "It works!"});
-})
+router.get('/:cid', thoughtsControllers.getThoughtById);
+
+router.get('/user/:uid', thoughtsControllers.getThoughtByUserId);
+
+router.post('/', thoughtsControllers.createThought);
 
 module.exports = router;
