@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/:cid', thoughtsControllers.getThoughtById);
 
-router.get('/user/:uid', thoughtsControllers.getThoughtByUserId);
+router.get('/user/:uid', thoughtsControllers.getThoughtsByUserId);
 
 router.post('/', thoughtsControllers.createThought);
 

@@ -2,7 +2,7 @@ const { v4: uuidv4 } = require('uuid');
 uuidv4();
 const HttpError = require('../models/http-error');
 
-const THOUGHTS = [
+let THOUGHTS = [
     {
         id: 'c1',
         caption: 'OMG! CR7 is leaving man utd...again. So we need a striker badly. Any decent striker available in the market? 😶😶😶',
@@ -44,20 +44,20 @@ const getThoughtById = (req, res, next) => {
     res.json({thought});
 }
 
-const getThoughtByUserId = (req, res, next) => {
+const getThoughtsByUserId = (req, res, next) => {
     const userId = req.params.uid;
 
-    const thought = THOUGHTS.find(t => {
+    const thoughts = THOUGHTS.filter(t => {
         return t.creator === userId;
     })
 
-    if(!thought) {
+    if(!thoughts || thoughts.length === 0) {
         return next(
             new HttpError('No Thoughts Found for the provided User', 404)
         );
     }
     
-    res.json({thought});
+    res.json({thoughts});
 }
 
 const createThought = (req, res, next) => {
@@ -71,10 +71,10 @@ const createThought = (req, res, next) => {
         image
     }
 
-    THOUGHTS.push(createThought);
+    THOUGHTS.unshift(createThought);
     res.status(201).json({thought: createdThought});
 }
 
 exports.getThoughtById = getThoughtById;
-exports.getThoughtByUserId = getThoughtByUserId;
+exports.getThoughtsByUserId = getThoughtsByUserId;
 exports.createThought = createThought;
