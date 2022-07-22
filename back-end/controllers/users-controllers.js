@@ -1,6 +1,8 @@
 const { v4: uuidv4 } = require('uuid');
 uuidv4();
+const { validationResult } = require('express-validator');
 const HttpError = require('../models/http-error');
+const UserModel = require('../models/users-model');
 
 let USERS = [
     {
@@ -11,34 +13,48 @@ let USERS = [
     }
 ];
 
-const getUsers = (req, res, next) => {
-    res.json({ users: USERS });
+const getUsers = async (req, res, next) => {
+      try{
+          const userRecords = await UserModel.find();
+          res.json(userRecords);
+      }catch{
+        res.send("error")
+      }
   };
   
-  const register = (req, res, next) => {
-    const { name, email, password } = req.body;
-  
-    const hasUser = USERS.find(u => u.email === email);
-    if (hasUser) {
-      return next(new HttpError('Could not create user, email already exists.', 422));
+  const register = async (req, res, next) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return next(new HttpError('Invalid Inputs. Please check again', 422))
     }
+
+    const newUser = new UserModel({
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password
+    })
   
-    const createdUser = {
-      id: uuidv4(),
-      name,
-      email,
-      password
-    };
+    // const hasUser = UserModel.findOne({
+    //   email: newUser.email
+    // });
+
+    // if (hasUser) {
+    //   return next(new HttpError('Could not create user, email already exists.', 422));
+    // }
+
+      try{
+          const u1 = await newUser.save();
+          res.json(u1);
+      }catch(err){
+          return next(new HttpError('Invalid Inputs. Please check again', 422)) 
+      }
   
-    USERS.push(createdUser);
-  
-    res.status(201).json({user: createdUser});
   };
   
   const login = (req, res, next) => {
     const { email, password } = req.body;
   
-    const identifiedUser = USERS.find(u => u.email === email);
+    const identifiedUser = UserModel.find(u => u.email === email);
     if (!identifiedUser || identifiedUser.password !== password) {
       return next(new HttpError('Could not identify user, credentials seem to be wrong.', 401));
     }

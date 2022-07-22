@@ -1,6 +1,9 @@
 const { v4: uuidv4 } = require('uuid');
 uuidv4();
+const { validationResult } = require('express-validator');
+
 const HttpError = require('../models/http-error');
+const ThoughtModel = require('../models/thoughts-model');
 
 let THOUGHTS = [
     {
@@ -29,50 +32,55 @@ let THOUGHTS = [
     }
 ]
 
-const getThoughtById = (req, res, next) => {
-    const thoughtId = req.params.cid;
-    const thought = THOUGHTS.find(t => {
-        return t.id === thoughtId;
-    })
-    console.log(thought);
-    if(!thought) {
+const getThoughtById = async (req, res, next) => {
+
+    try{
+        const thoughtRecord = await ThoughtModel.findById(req.params.cid);
+        res.json(thoughtRecord);
+    }catch{
         return next(
             new HttpError('No Thoughts Found for the provided ID', 404)
             );
     }
 
-    res.json({thought});
 }
 
-const getThoughtsByUserId = (req, res, next) => {
-    const userId = req.params.uid;
+const getThoughtsByUserId = async (req, res, next) => {
 
-    const thoughts = THOUGHTS.filter(t => {
-        return t.creator === userId;
-    })
-
-    if(!thoughts || thoughts.length === 0) {
+    try{
+        const thoughtRecord = await ThoughtModel.find({
+            creator: req.params.uid
+        });
+        res.json(thoughtRecord);
+    }catch{
         return next(
             new HttpError('No Thoughts Found for the provided User', 404)
-        );
+            );
     }
     
-    res.json({thoughts});
 }
 
-const createThought = (req, res, next) => {
-    const { caption, postmaker, creator, time, image } = req.body;
-    const createdThought = {
-        id: uuidv4(),
-        caption,
-        postmaker,
-        creator,
-        time,
-        image
+const createThought = async (req, res, next) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return next(new HttpError('Invalid Inputs. Please check again', 422))
     }
 
-    THOUGHTS.unshift(createThought);
-    res.status(201).json({thought: createdThought});
+    const postThought = new ThoughtModel({
+        caption: req.body.caption,
+        postmaker: req.body.postmaker,
+        creator: req.body.creator,
+        time: req.body.time,
+        image: req.body.image
+    })
+
+    try{
+        const t1 = await postThought.save();
+        res.json(t1);
+    }catch(err){
+        return next(new HttpError('Invalid Inputs. Please check again', 422)) 
+    }
+
 }
 
 exports.getThoughtById = getThoughtById;

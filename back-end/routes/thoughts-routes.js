@@ -1,4 +1,5 @@
 const express = require('express');
+const { check } = require('express-validator');
 
 const thoughtsControllers = require('../controllers/thoughts-controllers');
 
@@ -8,6 +9,12 @@ router.get('/:cid', thoughtsControllers.getThoughtById);
 
 router.get('/user/:uid', thoughtsControllers.getThoughtsByUserId);
 
-router.post('/', thoughtsControllers.createThought);
-
+router.post('/', 
+    [
+        check('caption')
+        .not()
+        .isEmpty()
+    ]
+    , thoughtsControllers.createThought);
+    
 module.exports = router;

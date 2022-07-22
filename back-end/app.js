@@ -1,11 +1,19 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const url = 'mongodb://localhost/mini-fb'
 
 const thoughtsRoutes = require('./routes/thoughts-routes');
 const usersRoutes = require('./routes/users-routes');
 const HttpError = require('./models/http-error');
 
 const app = express();
+mongoose.connect(url, {useNewUrlParser:true});
+const con = mongoose.connection;
+
+con.on('open', function(){
+    console.log("connected...")
+})
 
 app.use(bodyParser.json());
 
