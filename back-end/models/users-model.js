@@ -13,7 +13,16 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    image: {
+        type: String,
+        required: true
+    },
+    thoughts: [{
+        type: mongoose.Types.ObjectId,
+        required: true,
+        ref: 'ThoughtModel'
+    }]
 })
 
 userSchema.plugin(uniqueValidator);

@@ -3,6 +3,8 @@ uuidv4();
 const { validationResult } = require('express-validator');
 const HttpError = require('../models/http-error');
 const UserModel = require('../models/users-model');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken')
 
 let USERS = [
     {
@@ -14,12 +16,17 @@ let USERS = [
 ];
 
 const getUsers = async (req, res, next) => {
+  let users;
       try{
-          const userRecords = await UserModel.find();
-          res.json(userRecords);
+          users = await UserModel.find({}, '-password');
       }catch{
-        res.send("error")
+        const error = new HttpError(
+          'Fetching users failed.',
+          500
+        )
+        return next(error);
       }
+      res.json({ users: users.map(user => user.toObject({ getters: true }))})
   };
   
   const register = async (req, res, next) => {
@@ -31,35 +38,65 @@ const getUsers = async (req, res, next) => {
     const newUser = new UserModel({
       name: req.body.name,
       email: req.body.email,
-      password: req.body.password
+      image: req.file.path,
+      password: req.body.password,
+      thoughts: [],
+      stories: []
     })
   
-    // const hasUser = UserModel.findOne({
-    //   email: newUser.email
-    // });
+    // let existingUser = null;
+    // try{
+    //     existingUser = await UserModel.findOne({email: email})
+    //   } catch {
+    //     return next(new HttpError('Could not sign up, unknown error found.', 422));
+    //   }
 
-    // if (hasUser) {
-    //   return next(new HttpError('Could not create user, email already exists.', 422));
-    // }
+    //   if(existingUser) {
+    //     const error = new HttpError('User exists already, please login instead.', 422);
+    //     return next(error);
+    //   }
+
 
       try{
           const u1 = await newUser.save();
-          res.json(u1);
       }catch(err){
           return next(new HttpError('Invalid Inputs. Please check again', 422)) 
       }
-  
+      
+      let token;
+      try {
+        token = jwt.sign({userId: newUser.id, email: newUser.email}, 'supersecret_dont_share', {expiresIn: '1h'})
+      } catch (err) {
+        return next(new HttpError('Signup failed', 500));
+      }
+      
+      res.status(201).json({userId: newUser.id, email: newUser.email, token: token})
   };
   
-  const login = (req, res, next) => {
+  const login = async (req, res, next) => {
     const { email, password } = req.body;
-  
-    const identifiedUser = UserModel.find(u => u.email === email);
-    if (!identifiedUser || identifiedUser.password !== password) {
-      return next(new HttpError('Could not identify user, credentials seem to be wrong.', 401));
+
+    let existingUser;
+
+    try{
+      existingUser = await UserModel.findOne({ email: email })
+    } catch (err){
+      const error = new HttpError('Login failed. Try again later.', 500);
+      return next(error);
     }
   
-    res.json({message: 'Logged in!'});
+    if (!existingUser || existingUser.password !== password) {
+      return next(new HttpError('Could not identify user, credentials seem to be wrong.', 401));
+    }
+
+    let token;
+      try {
+        token = jwt.sign({userId: existingUser.id, email: existingUser.email}, 'supersecret_dont_share', {expiresIn: '1h'})
+      } catch (err) {
+        return next(new HttpError('Login failed', 500));
+      }
+    
+    res.json({userId: existingUser.id, email: existingUser.email, token: token, name: existingUser.name, image: existingUser.image});
   };
   
   exports.getUsers = getUsers;

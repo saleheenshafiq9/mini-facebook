@@ -9,7 +9,7 @@ const ThoughtsItem = props => {
       <li className='thought-item'>
         <Card className="thought-item__content">
             <div className="thought-item__info">
-              <img src="./self.jpg" alt={props.postmaker} style={{
+              <img src={`http://localhost:5000/${props.image}`} alt={props.postmaker} style={{
                 width: "40px",
                 height: "40px",
                 borderRadius: "50%"

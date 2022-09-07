@@ -1,10 +1,6 @@
 const mongoose = require('mongoose')
 
-const thoughtSchema = new mongoose.Schema({
-    caption: {
-        type: String,
-        required: true
-    },
+const storySchema = new mongoose.Schema({
     postmaker: {
         type: String,
         required: true
@@ -24,4 +20,4 @@ const thoughtSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('ThoughtModel', thoughtSchema);
+module.exports = mongoose.model('StoryModel', storySchema);

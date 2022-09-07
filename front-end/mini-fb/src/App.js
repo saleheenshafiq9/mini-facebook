@@ -10,13 +10,22 @@ import {AuthContext} from "./Components/UIElements/Context/Auth-Context"
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [userId, setUserId] = React.useState();
+  const [username, setUsername] = React.useState(false);
+  const [image, setImage] = React.useState();
 
-  const login = React.useCallback(() => {
+  const login = React.useCallback((uid, username, image) => {
     setIsLoggedIn(true);
+    setUserId(uid);
+    setUsername(username);
+    setImage(image);
   })
 
   const logout = React.useCallback(() => {
     setIsLoggedIn(false);
+    setUserId(null);
+    setUsername(null);
+    setImage(null);
   })
 
   let routes;
@@ -46,7 +55,7 @@ function App() {
 
   return (
     <div className="App">
-      <AuthContext.Provider value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}>
+      <AuthContext.Provider value={{ isLoggedIn: isLoggedIn, userId: userId, login: login, username: username, image: image, logout: logout }}>
         <Home />
         {routes}
       </AuthContext.Provider>

@@ -1,6 +1,9 @@
 import React from 'react'
+import { useState } from 'react'
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import Feed from '../Feed/Feed'
+import { useHttpClient } from '../UIElements/hooks/http-hooks'
 import ThoughtsList from './ThoughtsList'
 
 const Thoughts = props => {
@@ -41,9 +44,17 @@ const Thoughts = props => {
         time: 'just now',
         image: '../../Assets/self.jpg'
     }
-
+    const [loadedThoughts, setLoadedThoughts] = useState();
+    const {isLoading, error, sendRequest, clearError} = useHttpClient();
     const userId = useParams().userId;
-    const loadedThoughts = THOUGHTS.filter(thought => thought.creator === userId);
+
+    useEffect(() => {
+        const fetchThoughts = async () => {
+            const responseData = await sendRequest('http://localhost:5000/api/thoughts');
+            setLoadedThoughts(responseData.thoughts);
+        }
+        fetchThoughts();
+    }, [sendRequest])
 
     if(props.isPost === true) {
         THOUGHTS.unshift(newThought);
@@ -51,7 +62,7 @@ const Thoughts = props => {
 
   return (
     <div>
-      <ThoughtsList items={THOUGHTS}/>
+      <ThoughtsList items={loadedThoughts}/>
     </div>
   )
 }

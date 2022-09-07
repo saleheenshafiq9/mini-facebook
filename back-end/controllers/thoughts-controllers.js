@@ -4,6 +4,8 @@ const { validationResult } = require('express-validator');
 
 const HttpError = require('../models/http-error');
 const ThoughtModel = require('../models/thoughts-model');
+const UserModel = require('../models/users-model');
+const { default: mongoose } = require('mongoose');
 
 let THOUGHTS = [
     {
@@ -34,14 +36,17 @@ let THOUGHTS = [
 
 const getThoughtById = async (req, res, next) => {
 
-    try{
-        const thoughtRecord = await ThoughtModel.findById(req.params.cid);
-        res.json(thoughtRecord);
-    }catch{
-        return next(
-            new HttpError('No Thoughts Found for the provided ID', 404)
-            );
-    }
+    let thoughts;
+      try{
+          thoughts = await ThoughtModel.find({}, '-image');
+      }catch{
+        const error = new HttpError(
+          'Fetching thoughts failed.',
+          500
+        )
+        return next(error);
+      }
+      res.json({ thoughts: thoughts.map(thought => thought.toObject({ getters: true }))})
 
 }
 
@@ -66,19 +71,48 @@ const createThought = async (req, res, next) => {
         return next(new HttpError('Invalid Inputs. Please check again', 422))
     }
 
+    
+
     const postThought = new ThoughtModel({
         caption: req.body.caption,
         postmaker: req.body.postmaker,
         creator: req.body.creator,
         time: req.body.time,
-        image: req.body.image
+        image: req.body.image,
     })
 
+    // let user;
+
+    // try{
+    //     user = await UserModel.findById(creator)
+    // } catch {
+    //     const error = new HttpError(
+    //         'Creating thoughts failed. Please try again',
+    //         500
+    //     )
+    //     return next(error);
+    // }
+
+    // if(!user) {
+    //     const error = new HttpError(
+    //         'Could not find user for provided ID',
+    //         404
+    //     )
+    //     return next(error);
+    // }
+
     try{
+        // const sess = await mongoose.startSession();
+        // sess.startTransaction();
+        // await postThought.save({ session: sess });
+        // UserModel.thoughts.push(postThought);
+        // await UserModel.save({ session: sess });
+        // await sess.commitTransaction();
         const t1 = await postThought.save();
+        console.log(t1);
         res.json(t1);
     }catch(err){
-        return next(new HttpError('Invalid Inputs. Please check again', 422)) 
+        return next(new HttpError('Invalid Inputs. Please cheasck again', 422)) 
     }
 
 }

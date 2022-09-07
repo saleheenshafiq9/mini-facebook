@@ -3,6 +3,7 @@ import React, { useContext, useState } from 'react';
 import Card from '../UIElements/Card';
 import Input from '../UIElements/Elements/Input';
 import Button from '../UIElements/Elements/Button';
+import ImageUpload from '../UIElements/Elements/ImageUpload';
 import {
   VALIDATOR_EMAIL,
   VALIDATOR_MINLENGTH,
@@ -10,12 +11,17 @@ import {
 } from '../UIElements/utils/Validators';
 import { useForm } from '../UIElements/hooks/form-hook';
 import { AuthContext } from '../UIElements/Context/Auth-Context';
+import { useHttpClient } from '../UIElements/hooks/http-hooks';
+import ErrorModal from '../UIElements/Elements/ErrorModal';
+import LoadingSpinner from '../UIElements/Elements/LoadingSpinner';
 import './Auth.css';
 
 const Auth = () => {
   const auth = useContext(AuthContext);
 
   const [isLoginMode, setIsLoginMode] = useState(true);
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+
   const [formState, inputHandler, setFormData] = useForm(
     {
       email: {
@@ -35,7 +41,8 @@ const Auth = () => {
       setFormData(
         {
           ...formState.inputs,
-          name: undefined
+          name: undefined,
+          image: undefined
         },
         formState.inputs.email.isValid && formState.inputs.password.isValid
       );
@@ -46,6 +53,10 @@ const Auth = () => {
           name: {
             value: '',
             isValid: false
+          },
+          image: {
+            value: null,
+            isValid: false
           }
         },
         false
@@ -54,14 +65,46 @@ const Auth = () => {
     setIsLoginMode(prevMode => !prevMode);
   };
 
-  const authSubmitHandler = event => {
+  const authSubmitHandler = async event => {
     event.preventDefault();
-    console.log(formState.inputs);
-    auth.login();
+
+    if(isLoginMode) {
+      try {
+        const responseData = await sendRequest('http://localhost:5000/api/users/login', 'POST', JSON.stringify({
+            email: formState.inputs.email.value,
+            password: formState.inputs.password.value
+          }),
+          {
+            'Content-Type': 'application/json'
+          }
+        )
+        auth.login(responseData.userId, responseData.name, responseData.image);
+      } catch (err){
+          console.log("login denied");
+      }
+
+    } else {
+      try {
+        const formData = new FormData();
+        formData.append('email', formState.inputs.email.value);
+        formData.append('name', formState.inputs.name.value);
+        formData.append('password', formState.inputs.password.value);
+        formData.append('image', formState.inputs.image.value);
+        const responseData = await sendRequest('http://localhost:5000/api/users/register', 'POST', formData
+        )
+        auth.login(responseData.userId, responseData.name, responseData.image);
+      
+      } catch (err){
+       
+      }
+    }
   };
 
   return (
+    <React.Fragment>
+      {/* <ErrorModal error={error} onClear={clearError} /> */}
     <Card className="authentication">
+      {isLoading && <LoadingSpinner asOverlay />}
       <h2 className='mt-4'>{isLoginMode ? 'Login' : 'Register'}</h2>
       <hr />
       <form onSubmit={authSubmitHandler}>
@@ -79,6 +122,7 @@ const Auth = () => {
               onInput={inputHandler}
             />
           )}
+          {!isLoginMode && <ImageUpload center id="image" onInput={inputHandler}/>}
             <Input
               element="input"
               id="email"
@@ -110,6 +154,7 @@ const Auth = () => {
         </Button><br /><br />
       </div>
     </Card>
+    </React.Fragment>
   );
 };
 
