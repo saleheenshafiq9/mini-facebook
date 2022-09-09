@@ -15,6 +15,16 @@
     text-align: center;
     margin-bottom: 1rem;
   }
+
+  .story-upload__preview {
+    width: 8rem;
+    height: 8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
   
   .image-upload__preview img {
     width: 100%;

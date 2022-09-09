@@ -75,7 +75,10 @@ const Auth = () => {
             password: formState.inputs.password.value
           }),
           {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            // 'Access-Control-Allow-Origin': '*',
+            // 'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
+            // 'Access-Control-Allow-Methods': 'GET, POST, DELETE, PATCH',
           }
         )
         auth.login(responseData.userId, responseData.name, responseData.image);

@@ -12,14 +12,7 @@ router.get('/', storiesControllers.getStoryById);
 
 router.get('/user/:uid', storiesControllers.getStoriesByUserId);
 
-router.use(checkAuth);
 
-router.post('/', fileUpload.single('image'), 
-    [
-        check('image')
-        .not()
-        .isEmpty()
-    ]
-    , storiesControllers.createStory);
+router.post('/', fileUpload.single('image'), storiesControllers.createStory);
     
 module.exports = router;

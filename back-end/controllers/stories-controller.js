@@ -107,6 +107,7 @@ const createStory = async (req, res, next) => {
         // UserModel.thoughts.push(postThought);
         // await UserModel.save({ session: sess });
         // await sess.commitTransaction();
+        console.log(req.file.path);
         const s1 = await postStory.save();
         console.log(s1);
         res.json(s1);
