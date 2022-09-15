@@ -1,37 +1,22 @@
 import React from "react";
 
-const StoriesItem = props => {
-    return (
-        <div>
-            <div className="card-group">
-            <div className="row">
-            <div className="card col-md-2 pt-4">
-                    <img className="card-img-top" src="{`http://localhost:5000/${props.image}`}" alt={props.postmaker}/>
-                </div>
+const StoriesItem = (props) => {
+  const bucketUrl = "http://localhost:9000/mybucket/";
 
-                <div className="card col-md-2 pt-4">
-                    <img className="card-img-top" src="{`http://localhost:5000/${props.image}`}" alt={props.postmaker}/>
-                </div>
-
-                <div className="card col-md-2 pt-4">
-                    <img className="card-img-top" src="{`http://localhost:5000/${props.image}`}" alt={props.postmaker}/>
-                </div>
-                
-                <div className="card col-md-2 pt-4">
-                    <img className="card-img-top" src="{`http://localhost:5000/${props.image}`}" alt={props.postmaker}/>
-                </div>
-
-                <div className="card col-md-2 pt-4">
-                    <img className="card-img-top" src="{`http://localhost:5000/${props.image}`}" alt={props.postmaker}/>
-                </div>
-
-                <div className="card col-md-2 pt-4">
-                    <img className="card-img-top" src="{`http://localhost:5000/${props.image}`}" alt={props.postmaker}/>
-                </div>
-            </div>
-        </div>
-        </div>
-    )
-}
+  return (
+    <div>
+      <div className="card col-10 py-2 mx-3" id="reel">
+        <p className="pb-1">{props.postmaker}</p>
+        <img
+          className="card-img-top"
+          src={bucketUrl + `${props.image}`}
+          height="200px"
+          alt={props.postmaker}
+        />
+        <p className="text-secondary pt-1">{props.time}</p>
+      </div>
+    </div>
+  );
+};
 
 export default StoriesItem;

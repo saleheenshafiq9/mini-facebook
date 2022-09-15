@@ -100,13 +100,6 @@ const Feed = () => {
         formData.append('image', file);
         formData.append('time', postDate);
         const responseData = await sendRequest('http://localhost:5000/api/stories', 'POST', formData)
-    //   await sendRequest('http://localhost:5000/api/stories', 'POST', JSON.stringify({
-    //     creator: auth.userId,
-    //     postmaker: auth.username,
-    //     image: previewUrl,
-    //     time: postDate
-    //   }),
-    //  )
     } catch(err) {
 
     }
@@ -160,7 +153,7 @@ const Feed = () => {
             </Button>
           </form>
         </div>
-        <div className="col-10">
+        <div>
           <Story className="center" isPost={putStory}/>
         </div>
       </div>
@@ -190,7 +183,7 @@ const Feed = () => {
       </form>
       </React.Fragment>
     </div>
-    <Thoughts className="center" caption={inputState.value} isPost={putStatus}/>
+    <Thoughts className="center" caption={inputState.value} isPost={putStatus} />
     </>
   )
 }

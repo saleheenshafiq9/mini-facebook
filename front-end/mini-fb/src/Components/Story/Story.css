@@ -1,12 +1,12 @@
 img {
-    max-height: 90%;
-    opacity: 0.8;
+  max-height: 90%;
+  opacity: 0.8;
 }
 
 .card {
-    max-height: 90%;
+  max-height: 90%;
 }
 
-.card-group {
-    height: 250px;
+#reel {
+  width: 170px;
 }
