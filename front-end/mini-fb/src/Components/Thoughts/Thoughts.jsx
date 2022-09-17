@@ -7,16 +7,13 @@ import { useHttpClient } from "../UIElements/hooks/http-hooks";
 import ThoughtsList from "./ThoughtsList";
 
 const Thoughts = (props) => {
-
   const [loadedThoughts, setLoadedThoughts] = useState();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const userId = useParams().userId;
 
   useEffect(() => {
     const fetchThoughts = async () => {
-      const responseData = await sendRequest(
-        "http://localhost:5000/api/thoughts"
-      );
+      const responseData = await sendRequest("http://localhost:81/thoughts");
       setLoadedThoughts(responseData.thoughts);
     };
     fetchThoughts();
